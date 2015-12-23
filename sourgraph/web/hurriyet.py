@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from common import make_req, beautify
+from sourgraph.web.common import make_req, beautify
 __author__ = 'ege'
 
 base_url = "http://www.hurriyet.com.tr/index/"

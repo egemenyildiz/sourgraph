@@ -1,7 +1,7 @@
 import argparse
 import logging
 import sys
-from web.eksi import make_req, beautify, find_page_count, generate_urls, walk_page
+from sourgraph.web.eksi import make_req, beautify, find_page_count, generate_urls, walk_page
 
 __author__ = 'ege'
 
@@ -14,6 +14,7 @@ ch.setLevel(logging.INFO)
 formatter = logging.Formatter('-> %(message)s')
 ch.setFormatter(formatter)
 LOGGER.addHandler(ch)
+LOGGER.propagate = False
 
 BASE_URL = 'http://eksisozluk.com/'
 
@@ -85,7 +86,7 @@ def run():
         pbar.finish()
         if results.ready():
             import itertools
-            from graphs import make_graph
+            from sourgraph.graphs import make_graph
 
             sorted_result_list = sorted(list(itertools.chain(*crawl_results)))
             LOGGER.info("Generating graph...")
@@ -93,7 +94,7 @@ def run():
                                   start_year=args().start_year, trim=args().trim)
             LOGGER.info("Graph saved...")
             if top_date and args().with_news:
-                from web.hurriyet import return_news_url
+                from sourgraph.web.hurriyet import return_news_url
                 LOGGER.info("Checking news...")
                 news_url = return_news_url(top_date, args().title)
                 if news_url:

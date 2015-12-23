@@ -1,7 +1,7 @@
 from datetime import datetime
 import re
 import logging
-from common import make_req, beautify
+from sourgraph.web.common import make_req, beautify
 
 LOGGER = logging.getLogger(__name__)
 
@@ -39,7 +39,6 @@ def find_entries(bs):
 
             if date_object:
                 dates.append(date_object)
-
 
     return dates
 

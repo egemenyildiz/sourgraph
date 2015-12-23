@@ -1,3 +1,12 @@
+# Installation
+
+    pip install git+https://github.com/egemenyildiz/sourgraph.git
+
+    
+# Usage
+
+    $> sourgraph -h
+    
     usage: sourgraph [-h] [-pr PAGE_RANGE] [-sy START_YEAR] [--trim] [--with-news]
                      title
     
@@ -12,3 +21,5 @@
                             start year (e.g. 2002)
       --trim                Trim lower points in graph
       --with-news           Include news from hurriyet.com
+
+
