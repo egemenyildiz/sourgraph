@@ -31,7 +31,7 @@
 
 ### graph:
 
-[graph](cnn_turk.png)
+![cnn türk](cnn_turk.png)
 
 ### news url:
 
