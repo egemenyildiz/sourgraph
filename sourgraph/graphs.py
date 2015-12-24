@@ -64,5 +64,5 @@ def make_graph(x, title, start_year, trim):
             l.pop(l.most_common(len(l))[-int(math.ceil(len(l) * 0.1)):][0][0])
 
     plot, top_date = create_figure(l, title, start_year)
-    plot.savefig('%s.png' % (title.replace(' ', '_').lower()))
+    plot.savefig('%s.png' % (title.replace(' ', '_')))
     return top_date

@@ -18,6 +18,12 @@ def find_page_count(bs):
         return int(entity.attrs[1][1]), int(entity.attrs[2][1])
     except TypeError as te:
         return None, None
+    except AttributeError as ae:
+        # single page
+        LOGGER.info("not enough data to generate a graph")
+        LOGGER.info("bye!")
+        import sys
+        sys.exit(0)
 
 
 def find_entries(bs):

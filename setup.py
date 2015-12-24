@@ -8,12 +8,12 @@ def read(fname):
 
 setup(
     name="sourgraph",
-    version="0.1.1",
+    version="0.1.2",
     author="ege",
-    author_email="",
+    author_email="egemenyildiz.e@gmail.com",
     description=("sourgraph"),
     license="BSD",
-    keywords="eksi sour graph",
+    keywords="eksisozluk sour graph",
     url="https://github.com/egemenyildiz/sourgraph",
     packages=['sourgraph', 'sourgraph/web'],
     scripts=['sourgraph/sourgraph'],

@@ -23,20 +23,20 @@ crawl_results = []
 
 def args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("title", help="ek$i title",
+    parser.add_argument("title", help="eksisozluk.com title",
                         type=lambda s: unicode(s, 'utf8'))
     parser.add_argument("-pr", "--page-range",
-                        help="page range like \"3-11\"",
+                        help="page range (e.g. 3-11)",
                         type=lambda s: unicode(s, 'utf8'))
     parser.add_argument("-sy", "--start-year",
-                        help="start year (e.g. 2002)",
+                        help="0 point for x-axis (e.g. 2002)",
                         type=int, default=1999)
     parser.add_argument('--trim', dest='trim',
-                        help="Trim lower points in graph",
+                        help="trim lower points in graph",
                         action='store_true')
     parser.set_defaults(trim=False)
     parser.add_argument('--with-news', dest='with_news',
-                        help="Include news from hurriyet.com",
+                        help="include news from hurriyet.com",
                         action='store_true')
     parser.set_defaults(with_news=False)
     return parser.parse_args()
@@ -49,7 +49,7 @@ def squash_results(res):
 def run():
     start_year = args().start_year
 
-    LOGGER.info("Requesting page counts...")
+    LOGGER.info("checking total page count")
     url = '%s%s' % (BASE_URL, args().title, )
     r = make_req(url)
     r = make_req("%s?searchform.when.from=%s-01-01&a=search" % (r.url, start_year))
@@ -65,52 +65,58 @@ def run():
         from time import sleep
         from progressbar import ProgressBar, Bar, FormatLabel, RotatingMarker
 
-        LOGGER.info("Generating URLs between pages [%d - %d] 'till %d..." %
+        LOGGER.info("generating urls between pages %d & %d for [%d - present]" %
                     (start, end, start_year))
+
         urls = generate_urls(r.url, start, end)
-        LOGGER.info("Crawling entries...")
+
+        LOGGER.info("scraping dates from entries...")
+
         pool = multiprocessing.Pool(processes=8)
         results = pool.map_async(walk_page, urls, callback=squash_results)
         pool.close()
 
         remaining = results._number_left
-        pbar = ProgressBar(widgets=[FormatLabel('-> '), RotatingMarker(), Bar()],
-                           maxval=remaining).start()
+        progress_bar = ProgressBar(widgets=[FormatLabel('-> '), RotatingMarker(),
+                                            FormatLabel(' '), Bar()],
+                                   maxval=remaining).start()
 
         while True:
             if results.ready():
                 break
-            pbar.update(remaining - results._number_left)
+            progress_bar.update(remaining - results._number_left)
             sleep(.05)
 
-        pbar.finish()
+        progress_bar.finish()
         if results.ready():
             import itertools
             from sourgraph.graphs import make_graph
 
+            title = args().title.lower()
+
             sorted_result_list = sorted(list(itertools.chain(*crawl_results)))
-            LOGGER.info("Generating graph...")
-            top_date = make_graph(sorted_result_list, title=args().title,
+            LOGGER.info("generating graph...")
+            top_date = make_graph(sorted_result_list, title=title,
                                   start_year=args().start_year, trim=args().trim)
-            LOGGER.info("Graph saved...")
+            LOGGER.info("graph saved")
             if top_date and args().with_news:
                 from sourgraph.web.hurriyet import return_news_url
-                LOGGER.info("Checking news...")
-                news_url = return_news_url(top_date, args().title)
+                LOGGER.info("checking news...")
+                news_url = return_news_url(top_date, title)
                 if news_url:
-                    LOGGER.info("News url: %s" % news_url)
+                    LOGGER.info("news url: %s" % news_url)
 
                     import webbrowser
-                    LOGGER.info("Opening url...")
+                    LOGGER.info("opening url...")
                     webbrowser.open(news_url, new=2)
                 else:
-                    LOGGER.info("Couldn't find any news for '%s'" % args().title)
-        LOGGER.info("Finished!")
+                    LOGGER.info("couldn't find any news for '%s'" % title)
+    LOGGER.info("bye!")
 
 
 def main():
     try:
         run()
     except KeyboardInterrupt:
-        LOGGER.info("Exiting...")
+        LOGGER.info("bye!")
         sys.exit(0)
