@@ -101,7 +101,7 @@ def run():
                     LOGGER.info("News url: %s" % news_url)
 
                     import webbrowser
-                    LOGGER.info("Opening url..." % news_url)
+                    LOGGER.info("Opening url...")
                     webbrowser.open(news_url, new=2)
                 else:
                     LOGGER.info("Couldn't find any news for '%s'" % args().title)
