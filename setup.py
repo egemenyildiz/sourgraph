@@ -26,6 +26,7 @@ setup(
         'numpy==1.10.0.post2',
         'progressbar==2.3',
         'requests==2.8.0',
+        'ndg-httpsclient==0.4.0',
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
