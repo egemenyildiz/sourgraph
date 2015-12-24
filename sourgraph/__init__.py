@@ -99,6 +99,10 @@ def run():
                 news_url = return_news_url(top_date, args().title)
                 if news_url:
                     LOGGER.info("News url: %s" % news_url)
+
+                    import webbrowser
+                    LOGGER.info("Opening url..." % news_url)
+                    webbrowser.open(news_url, new=2)
                 else:
                     LOGGER.info("Couldn't find any news for '%s'" % args().title)
         LOGGER.info("Finished!")
