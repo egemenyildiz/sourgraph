@@ -1,9 +1,9 @@
-# Installation
+# installation
 
     pip install git+https://github.com/egemenyildiz/sourgraph.git
 
     
-# Usage
+# usage
 
     $> sourgraph -h
     
@@ -21,5 +21,20 @@
                             start year (e.g. 2002)
       --trim                Trim lower points in graph
       --with-news           Include news from hurriyet.com
+
+
+# demo
+
+### asciicast:
+
+[![asciicast](https://asciinema.org/a/eo51w4tvwvl298912xvkrmbgw.png)](https://asciinema.org/a/eo51w4tvwvl298912xvkrmbgw)
+
+### graph:
+
+[graph](cnn_turk.png)
+
+### news url:
+
+[http://www.hurriyet.com.tr/index/cnn türk?d=20151001](http://www.hurriyet.com.tr/index/cnn%20t%C3%BCrk?d=20151001 "cnn türk")
 
 
